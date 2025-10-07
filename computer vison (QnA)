@@ -1,1 +1,42 @@
+### **Q1. What are path-finding algorithms? Explain any one path-finding algorithm in detail with its working steps.**
+**Answer:**
+Path-finding algorithms are techniques used to find an optimal route between two points (start and goal) while avoiding obstacles.  
+They are essential in robotics and autonomous navigation, where an agent must plan a safe and efficient path.
+#### Common Path-Finding Algorithms:
+- Dijkstra’s Algorithm  
+- A* (A-star) Algorithm  
+- BFS / DFS  
+- D* and RRT (used in dynamic environments)
+#### **A* (A-star) Algorithm – Explained**
+**Purpose:**  
+To find the shortest path between two points using both *actual distance traveled* and *estimated distance to the goal*.
+
+**Concept:**
+Each node has:
+- `g(n)` → cost from start to node *n*  
+- `h(n)` → heuristic estimate from *n* to goal  
+- `f(n) = g(n) + h(n)` → total estimated cost
+
+**Steps:**
+1. Initialize an *open list* (to explore) and *closed list* (already explored).
+2. Add the start node to the open list.
+3. Repeat until goal found:
+   - Pick node with smallest `f(n)` from open list.
+   - Move it to closed list.
+   - For each neighbour:
+     - If not in closed list, compute `f(n) = g + h`.
+     - If better path found, update parent and cost.
+4. Stop when goal reached — backtrack using parent links to form path.
+
+**Heuristic:**  
+For a grid, `h(n)` = Euclidean or Manhattan distance to goal.
+
+**Advantages:**
+- Combines optimality of Dijkstra and efficiency of greedy search.
+- Works well for maps and robot navigation.
+
+**Disadvantages:**
+- Slower in large grids.
+- Heuristic must be admissible (not overestimate).
+
 
