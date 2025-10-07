@@ -1,1 +1,139 @@
+# Visual-Inertial Odometry (VIO)
+
+---
+
+## 🧩 Overview
+
+Visual-Inertial Odometry (VIO) combines a **camera** and an **Inertial Measurement Unit (IMU)**  
+to estimate a robot’s motion (position + orientation) in real time — even when GPS is unavailable.
+
+- **Camera:** Tracks visual features like corners and edges between frames.
+- **IMU:** Measures acceleration and angular velocity.
+- **Fusion:** Together, they maintain accurate motion estimation, compensating for each other’s weaknesses.
+
+---
+
+## 🧠 Question 1
+
+### Scenario
+An autonomous vehicle is in a **GPS-denied tunnel**, and the **camera lens gets blurred by fog for 10 seconds.**
+
+---
+
+### (a) How does the VIO system propagate state using only IMU?
+
+During the camera blackout:
+- The system relies solely on the **IMU propagation model**.  
+- It uses **dead reckoning** — integrating accelerometer and gyroscope data to update position and orientation:
+  \[
+  p_{t+1} = p_t + v_t \Delta t + \frac{1}{2} a_t \Delta t^2
+  \]
+  \[
+  v_{t+1} = v_t + a_t \Delta t
+  \]
+  where \(a_t\) and \(v_t\) come from IMU readings.
+
+- The **Extended Kalman Filter (EKF)** or **nonlinear optimization backend** keeps predicting state using IMU data until visual updates resume.
+
+---
+
+### (b) What happens to uncertainty and drift?
+
+- **Uncertainty increases** over time because IMU data suffers from bias and noise.  
+- **Integration drift** (especially in position) grows quadratically with time.  
+- Without camera correction, the system’s estimated path starts diverging from the real trajectory.
+
+---
+
+### (c) When vision returns, how does the system re-align?
+
+When the camera starts seeing features again:
+1. Feature tracking resumes using **Visual Odometry (VO)**.
+2. The new visual measurements are compared to predicted positions.
+3. The backend (e.g., EKF or optimization) performs **state correction**, aligning visual and inertial data.
+4. The accumulated drift from IMU-only propagation gets **corrected**, reducing overall error.
+
+This process is called **visual-inertial fusion update**.
+
+---
+
+### (d) Libraries commonly used in VIO
+
+| Library | Description | Features |
+|----------|--------------|-----------|
+| **VINS-Mono** | Open-source monocular VIO | Uses nonlinear optimization with sliding window |
+| **ROVIO** | EKF-based VIO | Real-time, tightly coupled vision + IMU |
+| **OKVIS** | Keyframe-based VIO | Uses bundle adjustment backend |
+| **ORB-SLAM3** | Supports VIO mode | Works with monocular/stereo cameras |
+| **OpenVINS** | Research-friendly framework | Modular, easy for experimentation |
+
+---
+
+## 🧭 Question 2
+
+### Scenario
+A VIO system uses **one camera + one IMU** on a drone flying indoors.
+
+---
+
+### (a) How does the system resolve the scale ambiguity using the IMU?
+
+A single camera can’t determine **absolute scale** (how big movements really are).  
+IMU helps by providing:
+- **Linear acceleration magnitude** → helps scale the visual motion.  
+- Over time, by fusing camera and IMU data, the filter adjusts scale so that:
+  \[
+  ||v_{IMU}|| \approx ||v_{vision}||
+  \]
+  ensuring consistent metric motion.
+
+Thus, IMU makes monocular VIO capable of estimating *real-world distances*.
+
+---
+
+### (b) When does the system fail to figure out the scale?
+
+VIO fails to resolve scale in **degenerate motion** cases:
+1. **Pure rotation (no translation)** — IMU senses angular change but no acceleration to infer scale.  
+2. **Constant velocity** — acceleration readings ≈ 0, so IMU can’t aid scaling.  
+3. **Planar motion** — limited 3D parallax for camera features.
+
+**Detection:** scale drift appears as gradual mismatch between visual map and IMU path.  
+**Handling:** perform **small accelerations or altitude changes** to reintroduce scale observability.
+
+---
+
+### (c) How do popular libraries handle scale drift?
+
+| Library | Technique Used | Description |
+|----------|----------------|-------------|
+| **VINS-Mono** | Nonlinear optimization with IMU constraints | Periodically re-optimizes scale factor within sliding window |
+| **ROVIO** | EKF-based state correction | Continuously fuses IMU bias and scale parameters |
+| **OKVIS** | Keyframe bundle adjustment | Globally refines scale along with camera poses |
+| **ORB-SLAM3 (VIO mode)** | IMU preintegration | Reduces scale drift over time with factor graphs |
+
+**In short:**  
+They all use **IMU preintegration** (accumulating IMU readings between frames) + **joint optimization** with camera features to keep scale consistent.
+
+---
+
+## 🧩 Summary Table
+
+| Challenge | Cause | Mitigation |
+|------------|--------|-------------|
+| IMU-only drift | Sensor bias, integration error | Visual correction when available |
+| Scale ambiguity | Monocular camera limitation | Fuse IMU acceleration |
+| Degenerate motion | No translation | Introduce diverse motion |
+| Poor feature tracking | Motion blur / low texture | Use feature quality filtering |
+
+---
+
+## 📚 References
+- Mur-Artal, R., & Tardós, J. D. (2017). **ORB-SLAM2 and ORB-SLAM3 papers**.  
+- Qin, T., Li, P., & Shen, S. (2018). **VINS-Mono**: A Robust and Versatile Monocular Visual-Inertial State Estimator.  
+- Bloesch, M. et al. (2017). **ROVIO: Robust Visual Inertial Odometry Using Direct EKF**.  
+- https://arxiv.org/pdf/1708.03852  
+- https://arxiv.org/pdf/2211.04517  
+- https://thinkautonomous.ai/blog/visual-inertial-odometry/  
+- https://discuss.ardupilot.org/t/experiment-with-visual-odometry-rovio/40120
 
