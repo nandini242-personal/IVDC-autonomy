@@ -20,7 +20,7 @@ bash
 sudo apt install libopencv-dev
 
 ### how to run:
-place your input image as test_image.jpg im the same folder
+place your input image as  test_image.jpg in the same folder
 
 ### compile the program:
 g++ lane_detection.cpp -o lane_detection `pkg-config --cflags --libs opencv4`
