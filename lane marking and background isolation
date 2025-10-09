@@ -6,10 +6,8 @@ using namespace std;
 int main() {
     //Step 1: Read input image 
     Mat image = imread("test_image.jpg");
-    if (image.empty()) {
-        cout << "Error: Could not read image!" << endl;
-        return -1;
-    }
+    if (image.empty) {cout << "Error: Could not read image!" << endl;
+                           return -1; }
 
     //Step 2: Convert to grayscale
     Mat gray;
