@@ -1,16 +1,4 @@
-# Computer Vision – Lane Marking and Background Isolation
-This implementation follows the given constraints —  
-✅ No pretrained models  
-✅ Only standard C++ libraries with OpenCV  
-
-##  Method Used
-1. Convert input image to grayscale.  
-2. Apply Gaussian blur to remove noise.  
-3. Detect edges using the **Canny Edge Detector**.  
-4. Use **Hough Line Transform** to identify lane lines.  
-5. Draw the detected lane boundaries in **black** on a white mask.  
-6. Save the final binary image (`output.png`).
-
+LANE MARKING AND BACKGROUND
 ## ⚙️ Requirements
 - C++ compiler (g++)  
 - OpenCV library (version 4.x preferred)
@@ -31,5 +19,12 @@ g++ lane_detection.cpp -o lane_detection `pkg-config --cflags --libs opencv4`
 ###the binary output will be saved as:
 output.png
 
+ ##  Method Used
+1. Convert input image to grayscale.  
+2. Apply Gaussian blur to remove noise.  
+3. Detect edges using the **Canny Edge Detector**.  
+4. Use **Hough Line Transform** to identify lane lines.  
+5. Draw the detected lane boundaries in **black** on a white mask.  
+6. Save the final binary image (`output.png`).
 
 
