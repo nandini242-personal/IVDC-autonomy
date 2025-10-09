@@ -1,5 +1,5 @@
 LANE MARKING AND BACKGROUND ISOLATION
-## ⚙️ Requirements
+## Requirements
 - C++ compiler (g++)  
 - OpenCV library (version 4.x preferred)
 
