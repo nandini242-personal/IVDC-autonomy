@@ -4,44 +4,44 @@ using namespace cv;
 using namespace std;
 
 int main() {
-    // ---------- Step 1: Read input image ----------
+    //Step 1: Read input image 
     Mat image = imread("test_image.jpg");
     if (image.empty()) {
         cout << "Error: Could not read image!" << endl;
         return -1;
     }
 
-    // ---------- Step 2: Convert to grayscale ----------
+    //Step 2: Convert to grayscale
     Mat gray;
     cvtColor(image, gray, COLOR_BGR2GRAY);
 
-    // ---------- Step 3: Reduce noise ----------
+    //Step 3: Reduce noise 
     Mat blurImg;
     GaussianBlur(gray, blurImg, Size(5,5), 0);
 
-    // ---------- Step 4: Detect edges (Canny) ----------
+    //Step 4: Detect edges (Canny)
     Mat edges;
     Canny(blurImg, edges, 50, 150);
 
-    // ---------- Step 5: Detect lines using Hough Transform ----------
+    //Step 5: Detect lines using Hough Transform 
     vector<Vec4i> lines;
     HoughLinesP(edges, lines, 1, CV_PI/180, 50, 50, 150);
 
     // Create a blank mask for drawing lanes
     Mat mask = Mat::ones(image.size(), CV_8UC1) * 255; // start as white
 
-    // ---------- Step 6: Draw detected lane lines ----------
+    //Step 6: Draw detected lane lines
     for (size_t i = 0; i < lines.size(); i++) {
         Vec4i l = lines[i];
         line(mask, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(0), 10); // black lines
     }
 
-    // ---------- Step 7: Optional - Fill the region between lanes ----------
+    // Step 7: Optional - Fill the region between lanes 
     // Since we don’t know lane boundaries exactly, we’ll approximate by blurring and thresholding.
     Mat filled;
     threshold(mask, filled, 128, 255, THRESH_BINARY);
 
-    // ---------- Step 8: Save final binary output ----------
+    //Step 8: Save final binary output
     imwrite("output.png", filled);
 
     cout << "Lane marking binary image saved as output.png" << endl;
