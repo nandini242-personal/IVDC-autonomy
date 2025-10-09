@@ -3,9 +3,9 @@
 ---
 
 ## 🧩 Overview
-Vision-Language-Action (VLA) models integrate **perception (vision)**, **understanding (language)**, and **decision-making (action)**.  
-They enable robots to interpret visual input, understand natural language commands, and execute appropriate physical actions.  
-In this section, a hospital-assistant robot is used as an example.
+Vision-Language-Action (VLA) models integrate perception (vision), understanding (language), and decision-making (action).  
+They use robots to interpret visual input, understand natural language commands, and execute appropriate physical actions.  
+In this explanation a hospital-assistant robot is used as an example.
 
 ---
 
