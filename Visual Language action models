@@ -2,16 +2,16 @@
 
 ---
 
-## 🧩 Overview
+ Overview
 Vision-Language-Action (VLA) models integrate perception (vision), understanding (language), and decision-making (action).  
 They use robots to interpret visual input, understand natural language commands, and execute appropriate physical actions.  
 In this explanation a hospital-assistant robot is used as an example.
 
 ---
 
-## 🧠 Question 1: Grounding & Representation
+ Question 1: Grounding & Representation
 
-### 1️⃣ Fundamental Difficulty
+>>Fundamental Difficulty
 Instruction:  
 > “Deliver the medicines to Room 14, but only after the patient in Room 12 receives water.”
 
@@ -24,7 +24,7 @@ In short, the robot must **understand and monitor conditions**, not just follow 
 
 ---
 
-### 2️⃣ Conceptual Alignment: Visual, Language, and Action Tokens
+Conceptual Alignment: Visual, Language, and Action Tokens
 - **Visual tokens:** represent what the robot sees (rooms, people, obstacles).
 - **Language tokens:** represent parts of the command (“deliver”, “after”, “Room 12”).
 - **Action tokens:** represent executable moves (navigate, wait, handover).
@@ -37,7 +37,7 @@ To align them:
 
 ---
 
-### 3️⃣ Prediction Approaches: Autoregressive vs. Chunked
+Prediction Approaches: Autoregressive vs. Chunked
 
 | Approach | How It Works | Suitability |
 |-----------|---------------|-------------|
@@ -48,12 +48,11 @@ To align them:
 It can **pause, re-evaluate**, and check condition satisfaction before continuing.
 
 ---
-
-## 🤖 Question 2: Robustness, Safety & Uncertainty
+ Question 2: Robustness, Safety & Uncertainty
 
 Scenario: Vision is blurred for 8 seconds during execution.
 
-### 1️⃣ Multimodal Robustness
+ Multimodal Robustness
 - **Vision-only models** fail when the camera feed is lost.  
 - **Multimodal grounding** combines:
   - **Memory** → stores previous frames and map.
@@ -64,7 +63,7 @@ These help maintain operation safely even without live vision.
 
 ---
 
-### 2️⃣ Open-Loop Dangers
+ Open-Loop Dangers
 “Open-loop” means continuing execution without new perception feedback.  
 **Dangers:**
 - Robot may collide with obstacles not previously seen.
@@ -74,8 +73,7 @@ These help maintain operation safely even without live vision.
 Hence, open-loop execution is unsafe for dynamic environments.
 
 ---
-
-### 3️⃣ Fallback Policy (Safety-Aware)
+ Fallback Policy (Safety-Aware)
 When perception confidence drops:
 1. **Continue cautiously** if confidence > threshold (minor blur).
 2. **Pause** if confidence < threshold or motion risk increases.
@@ -84,10 +82,9 @@ When perception confidence drops:
 The fallback policy must prioritize **human safety > task completion**.
 
 ---
+ Question 3: Scaling, Data, and Deployment Tradeoffs
 
-## ⚙️ Question 3: Scaling, Data, and Deployment Tradeoffs
-
-### 1️⃣ Data & Expressivity
+ Data & Expressivity
 - **Compact VLAs (like SmolVLA)** use smaller models → fewer parameters.
 - Trained on **community datasets**, not specialized ones.
 - Hence, they struggle with rare, complex, context-rich commands like:
@@ -99,7 +96,7 @@ The fallback policy must prioritize **human safety > task completion**.
 
 ---
 
-### 2️⃣ Efficiency vs. Expressivity
+ Efficiency vs. Expressivity
 
 | Design Choice | Effect on Efficiency | Effect on Expressivity |
 |----------------|---------------------|-------------------------|
@@ -113,7 +110,7 @@ Large = slow but deeply contextual.
 
 ---
 
-### 3️⃣ Hybrid Autonomy Strategy
+ Hybrid Autonomy Strategy
 A **hybrid setup** ensures balance between cost, speed, and intelligence.
 
 **Strategy:**
@@ -128,7 +125,7 @@ A **hybrid setup** ensures balance between cost, speed, and intelligence.
 
 ---
 
-## 📚 References
+References
 - SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics (Hugging Face Paper 2506.01844)  
 - “LLMs Meet Robotics” Series: https://www.youtube.com/watch?v=8dZUOo5xWFw  
 - OpenAI & Google Robotics Research on VLA Models  
