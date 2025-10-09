@@ -1,30 +1,22 @@
 # Visual-Inertial Odometry (VIO)
+>> Overview
 
----
-
-## 🧩 Overview
-
-Visual-Inertial Odometry (VIO) combines a **camera** and an **Inertial Measurement Unit (IMU)**  
+Visual-Inertial Odometry [VIO]  combines a camera and an Inertial Measurement Unit (IMU)   
 to estimate a robot’s motion (position + orientation) in real time — even when GPS is unavailable.
 
-- **Camera:** Tracks visual features like corners and edges between frames.
-- **IMU:** Measures acceleration and angular velocity.
-- **Fusion:** Together, they maintain accurate motion estimation, compensating for each other’s weaknesses.
+- Camera:  Tracks visual features like corners and edges .
+- IMU:     Measures acceleration and angular velocity.
+- Fusion:  Together, they maintain accurate motion estimation, compensating for each other’s weaknesses.
 
----
+--- Question 1
+>>Scenario
+An autonomous vehicle is in a "GPS-denied tunnel", and the "camera lens gets blurred by fog for 10 seconds!!"
 
-## 🧠 Question 1
-
-### Scenario
-An autonomous vehicle is in a **GPS-denied tunnel**, and the **camera lens gets blurred by fog for 10 seconds.**
-
----
-
-### (a) How does the VIO system propagate state using only IMU?
+ (a) How does the VIO system propagate state using only IMU?
 
 During the camera blackout:
 - The system relies solely on the **IMU propagation model**.  
-- It uses **dead reckoning** — integrating accelerometer and gyroscope data to update position and orientation:
+- It uses "dead reckoning"" — integrating accelerometer and gyroscope data to update position and orientation:
   \[
   p_{t+1} = p_t + v_t \Delta t + \frac{1}{2} a_t \Delta t^2
   \]
